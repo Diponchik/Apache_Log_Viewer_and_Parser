@@ -1,0 +1,35 @@
+﻿body {
+    height: 100%;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+    height: 100%;
+}
+
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+.carousel-inner .item img[src=".svg"] {
+    width: 100%;
+}
+
+@media screen and (max-width: 767px) {
+    .carousel-caption {
+        display: none;
+    }
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+[ng\:cloak], [ng-cloak], .ng-cloak {
+    display: none !important;
+}
