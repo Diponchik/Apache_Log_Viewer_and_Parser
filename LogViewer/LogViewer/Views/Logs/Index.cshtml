@@ -1,0 +1,135 @@
+﻿@{
+    ViewBag.Title = "Logs";
+}
+
+@section Styles {
+    <environment names="Development">
+        <link rel="stylesheet" href="~/css/logs.css" />
+        <link rel="stylesheet" href="~/lib/jasny-bootstrap/dist/css/jasny-bootstrap.css"/>
+    </environment>
+
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="~/css/logs.css" />
+        <link rel="stylesheet" href="~/lib/jasny-bootstrap/dist/css/jasny-bootstrap.min.css"/>
+    </environment>
+}
+
+@section Scripts {
+    <environment names="Development">
+        <script src="~/lib/jasny-bootstrap/dist/js/jasny-bootstrap.js"></script>
+        <script src="js/logs/log.viewer.logs.controller.js"></script>
+        <script src="js/logs/log.viewer.logs.service.js"></script>
+    </environment>
+
+    <environment names="Staging,Production">
+        <script src="~/lib/jasny-bootstrap/dist/js/jasny-bootstrap.min.js"></script>
+        <script src="js/logs/log.viewer.logs.controller.js"></script>
+        <script src="js/logs/log.viewer.logs.service.js"></script>
+    </environment>
+}
+<div class="container-fluid" ng-app="log.viewer.logs">
+    <div class="row"
+         ng-controller="logsController"
+         ng-cloak
+         ng-init="getAllLogs()"
+         cg-busy="[fetchLogsPromise, fetchAllLogsCountPromise]">
+        <toaster-container></toaster-container>
+        <div id="filter-panel" class="filter-panel text-center">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="filter-col" style="margin-right:0;" for="pref-search">From:</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" readonly
+                                       uib-datepicker-popup="dd-MM-yyyy"
+                                       is-open="startDatePopup.opened"
+                                       ng-model="logsFilter.fromDate"
+                                       datepicker-options="startDateOptions" ng-change="changeMinEndTime()" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default calendar-button" ng-click="openStartDatePopup()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="filter-col" style="margin-right:0;" for="pref-search">To:</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" readonly
+                                       uib-datepicker-popup="dd-MM-yyyy"
+                                       is-open="endDatePopup.opened"
+                                       ng-model="logsFilter.toDate"
+                                       datepicker-options="endDateOptions" ng-change="changeMaxStartTime()" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default calendar-button" ng-click="openEndDatePopup()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group filter-btn">
+                            <button type="reset" class="btn btn-default" ng-click="reset()">
+                                <span class="glyphicon glyphicon-record"></span>Reset
+                            </button>
+                        </div>
+                        <div class="form-group filter-btn">
+                            <button type="submit" class="btn btn-success" ng-click="getAllLogs()">
+                                <span class="glyphicon glyphicon-filter"></span>Filter
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <ul uib-pagination total-items="totalItems"
+                items-per-page="logsFilter.itemsPerPage"
+                ng-model="logsFilter.currentPage"
+                ng-click="setPage(logsFilter.currentPage)"
+                max-size="maxVisiblePages"
+                class="pagination-md"
+                boundary-links="true"
+                first-text="&laquo;"
+                last-text="&raquo;"
+                next-text="&rsaquo;"
+                previous-text="&lsaquo;"></ul>
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr class="filters">
+                    <th>Id</th>
+                    <th>Date</th>
+                    <th>Host</th>
+                    <th>Route</th>
+                    <th>Params</th>
+                    <th>Status</th>
+                    <th>Size</th>
+                    <th>Country</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="log in logs">
+                    <td>{{ log.id }}</td>
+                    <td>{{ log.date | date : "dd.MM.yyyy HH:mm:ss" }}</td>
+                    <td>{{ log.hostName }}</td>
+                    <td>{{ log.route }}</td>
+                    <td>{{ log.params }}</td>
+                    <td>{{ log.status }}</td>
+                    <td>{{ log.size }}</td>
+                    <td>{{ log.country }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="text-center">
+            <ul uib-pagination total-items="totalItems"
+                items-per-page="logsFilter.itemsPerPage"
+                ng-model="logsFilter.currentPage"
+                ng-click="setPage(logsFilter.currentPage)"
+                max-size="maxVisiblePages"
+                class="pagination-md"
+                boundary-links="true"
+                first-text="&laquo;"
+                last-text="&raquo;"
+                next-text="&rsaquo;"
+                previous-text="&lsaquo;"></ul>
+        </div>
+    </div>
+</div>

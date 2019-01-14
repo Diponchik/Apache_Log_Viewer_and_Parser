@@ -1,0 +1,122 @@
+﻿@{
+    ViewBag.Title = "Top Records";
+}
+
+@section Styles {
+    <environment names="Development">
+        <link rel="stylesheet" href="~/css/logs.css" />
+        <link rel="stylesheet" href="~/lib/jasny-bootstrap/dist/css/jasny-bootstrap.css" />
+    </environment>
+
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="~/css/logs.css" />
+        <link rel="stylesheet" href="~/lib/jasny-bootstrap/dist/css/jasny-bootstrap.min.css" />
+    </environment>
+}
+
+@section Scripts {
+    <environment names="Development">
+        <script src="~/lib/jasny-bootstrap/dist/js/jasny-bootstrap.js"></script>
+        <script src="js/logs/log.viewer.logs.controller.js"></script>
+        <script src="js/logs/log.viewer.logs.service.js"></script>
+    </environment>
+
+    <environment names="Staging,Production">
+        <script src="~/lib/jasny-bootstrap/dist/js/jasny-bootstrap.min.js"></script>
+        <script src="js/logs/log.viewer.logs.controller.js"></script>
+        <script src="js/logs/log.viewer.logs.service.js"></script>
+    </environment>
+}
+<div class="container-fluid" ng-app="log.viewer.logs">
+    <div class="row"
+         ng-controller="logsController"
+         ng-cloak
+         cg-busy="[getTopRecordsPromise]">
+        <toaster-container></toaster-container>
+        <div id="filter-panel" class="filter-panel text-center">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <label class="filter-col" style="margin-right:0;" for="pref-orderby">Top:</label>
+                            <input class="form-control text-center"
+                                   style="max-width: none"
+                                   type="number"
+                                   step="1" min="0" max="50"
+                                   onkeypress="return false"
+                                   ondragStart="return false" onselectstart="return false"
+                                   oncut="return false" onpaste="return false"
+                                   autocomplete="off"
+                                   name="topRecords"
+                                   ng-model="logsFilter.top" />
+                        </div>
+                        <div class="form-group">
+                            <label class="filter-col" style="margin-right:0;" for="pref-search">From:</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" readonly
+                                       uib-datepicker-popup="dd-MM-yyyy"
+                                       is-open="startDatePopup.opened"
+                                       ng-model="logsFilter.fromDate"
+                                       datepicker-options="startDateOptions" ng-change="changeMinEndTime()" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default calendar-button" ng-click="openStartDatePopup()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="filter-col" style="margin-right:0;" for="pref-search">To:</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" readonly
+                                       uib-datepicker-popup="dd-MM-yyyy"
+                                       is-open="endDatePopup.opened"
+                                       ng-model="logsFilter.toDate"
+                                       datepicker-options="endDateOptions" ng-change="changeMaxStartTime()" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default calendar-button" ng-click="openEndDatePopup()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group filter-btn">
+                            <button type="reset" class="btn btn-default" ng-click="reset()">
+                                <span class="glyphicon glyphicon-record"></span>Reset
+                            </button>
+                        </div>
+                        <div class="form-group filter-btn">
+                            <button type="submit" class="btn btn-success" ng-click="getTopRecords()">
+                                <span class="glyphicon glyphicon-filter"></span>Get Records
+                            </button>
+                        </div>
+                        <label>
+                            <input type="radio" class="radio-inline" ng-model="logsFilter.isHostRequest" name="radios" value="true">
+                            <span class="outside">
+                                <span class="inside"></span>
+                            </span>Host
+                        </label>
+                        <label>
+                            <input type="radio" class="radio-inline" ng-model="logsFilter.isHostRequest" name="radios" value="false">
+                            <span class="outside">
+                                <span class="inside"></span>
+                            </span>Route
+                        </label>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr class="filters">
+                    <th>Name</th>
+                    <th>Count of requests</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="top in topRecords">
+                    <td>{{ top.name }}</td>
+                    <td>{{ top.count }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+

@@ -1,0 +1,15 @@
+﻿@using LogViewer.Controllers
+
+@{
+    ViewBag.Title = "Error";
+    string returnButtonText = "Return";
+}
+
+<div class="container body-content">
+    <div class="row">
+        <h1 class="text-danger">Error</h1>
+        <h2 class="text-danger">Error page content</h2>
+        <br />
+        @Html.ActionLink(returnButtonText, nameof(HomeController.Index), "Home", new { area = "" }, new { @class = "btn btn-primary btn-sm" })
+    </div>
+</div>

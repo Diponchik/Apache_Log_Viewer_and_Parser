@@ -1,0 +1,89 @@
+﻿.filter-col {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.filter-btn {
+    padding-left: 10px;
+}
+
+.dropup, .dropdown {
+    display: inline-block;
+}
+
+body {
+    min-width: 1034px;
+}
+
+.calendar-button {
+    padding-top: 9px;
+    padding-bottom: 9px;
+}
+
+td, th {
+    text-align: center;
+}
+
+
+label {
+    margin: 2em;
+    display: inline-block;
+    position: relative;
+    padding-left: 40px;
+    cursor: pointer;
+}
+
+input.radio-inline {
+    height: 1px;
+    width: 1px;
+    opacity: 0;
+}
+
+.outside {
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    margin-top: -10px;
+    width: 20px;
+    height: 20px;
+    border: 2px solid red;
+    border-radius: 50%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    background: none;
+}
+
+.inside {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    display: inline-block;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    background: red;
+    left: 3px;
+    top: 3px;
+    -webkit-transform: scale(0, 0);
+    transform: scale(0, 0);
+}
+.no-transforms .inside {
+    left: auto;
+    top: auto;
+    width: 0;
+    height: 0;
+}
+
+input:checked + .outside .inside {
+    -webkit-animation: radio-select 0.1s linear;
+    animation: radio-select 0.1s linear;
+    -webkit-transform: scale(1, 1);
+    transform: scale(1, 1);
+}
+.no-transforms input:checked + .outside .inside {
+    width: 10px;
+    height: 10px;
+}
